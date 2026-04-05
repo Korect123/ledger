@@ -325,7 +325,7 @@ select option{background:#fff;color:var(--ink)}
 .pl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .pl-name{flex:1}.pl-amt{font-weight:500;color:var(--ink)}
 
-.settings-col{display:flex;flex-direction:column;gap:12px;max-width:520px}
+.settings-compact{max-width:480px}
 .settings-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.03)}
 .sc-title{font-size:11px;color:var(--ink3);font-weight:500;letter-spacing:.02em;padding:14px 16px;border-bottom:1px solid var(--border)}
 .sc-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border)}
@@ -339,9 +339,19 @@ select option{background:#fff;color:var(--ink)}
 .sc-btn.danger{background:var(--red-bg);color:var(--red-t);border:1px solid rgba(201,68,50,.15)}
 .sc-btn.neutral{background:var(--card);color:var(--ink2);border:1px solid var(--border)}
 .sc-btn:hover{opacity:.85}
-.save-bal-btn{margin:12px 16px 14px;width:calc(100% - 32px);padding:10px;background:var(--gold);color:#fff;border:none;border-radius:var(--r-sm);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);transition:opacity .15s}
-.save-bal-btn:hover{opacity:.85}
-.info-box{margin:0 16px 14px;font-size:11px;color:var(--ink3);line-height:1.9;padding:10px 12px;background:var(--gold-bg);border:1px solid var(--border);border-radius:var(--r-sm)}
+.sc-section-label{font-size:11px;color:var(--ink3);font-weight:500;letter-spacing:.02em;padding:12px 16px 4px}
+.sc-row-inline{display:flex;align-items:center;gap:10px;padding:8px 16px}
+.sc-inline-label{font-size:13px;color:var(--ink);white-space:nowrap;min-width:68px}
+.sc-inline-input{width:140px!important;padding:6px 10px!important;font-size:13px!important;text-align:right}
+.sc-inline-btn{padding:5px 14px;border:none;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;white-space:nowrap}
+.sc-inline-btn.primary{background:var(--gold);color:#fff}
+.sc-inline-btn.neutral{background:var(--card);color:var(--ink2);border:1px solid var(--border)}
+.sc-inline-btn.danger{background:var(--red-bg);color:var(--red-t);border:1px solid rgba(201,68,50,.15)}
+.sc-inline-btn:hover{opacity:.85}
+.sc-inline-sub{font-size:12px;color:var(--ink3);flex:1}
+.sc-inline-hint{font-size:11px;color:var(--ink3)}
+.sc-divider{height:1px;background:var(--border);margin:2px 16px}
+.info-box{margin:0;font-size:11px;color:var(--ink3);line-height:1.9;padding:10px 12px;background:var(--gold-bg);border:1px solid var(--border);border-radius:var(--r-sm)}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;backdrop-filter:blur(6px)}
 .modal{background:#fff;border:1px solid var(--border2);border-radius:var(--r);width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.1)}
@@ -577,31 +587,26 @@ select option{background:#fff;color:var(--ink)}
       </div>
 
       <div id="sec-settings" class="section">
-        <div class="settings-col">
+        <div class="settings-compact">
           <div class="settings-card">
-            <div class="sc-title">账户余额</div>
-            <div class="sc-row"><div><div class="sc-label">💬 微信</div></div><input class="sc-input" type="number" id="set-wx" placeholder="0.00"></div>
-            <div class="sc-row"><div><div class="sc-label">🔵 支付宝</div></div><input class="sc-input" type="number" id="set-zfb" placeholder="0.00"></div>
-            <div class="sc-row"><div><div class="sc-label">💳 银行卡</div></div><input class="sc-input" type="number" id="set-bank" placeholder="0.00"></div>
-            <button class="save-bal-btn" onclick="saveBalances()">保存余额</button>
+            <div class="sc-section-label">账户余额</div>
+            <div class="sc-row-inline"><span class="sc-inline-label">💬 微信</span><input class="sc-inline-input" type="number" id="set-wx" placeholder="0.00"><button class="sc-inline-btn primary" onclick="saveBalances()">保存余额</button></div>
+            <div class="sc-row-inline"><span class="sc-inline-label">🔵 支付宝</span><input class="sc-inline-input" type="number" id="set-zfb" placeholder="0.00"></div>
+            <div class="sc-row-inline"><span class="sc-inline-label">💳 银行卡</span><input class="sc-inline-input" type="number" id="set-bank" placeholder="0.00"></div>
+            <div class="sc-divider"></div>
+            <div class="sc-section-label">月度预算</div>
+            <div class="sc-row-inline"><span class="sc-inline-label">预算上限</span><input class="sc-inline-input" type="number" id="set-budget" placeholder="0" min="0" step="100"><button class="sc-inline-btn primary" onclick="saveBudget()">保存</button><span class="sc-inline-hint">0 = 不限制</span></div>
+            <div class="sc-divider"></div>
+            <div class="sc-section-label">数据管理</div>
+            <div class="sc-row-inline"><span class="sc-inline-label">导出数据</span><span class="sc-inline-sub">JSON 格式备份</span><button class="sc-inline-btn neutral" onclick="exportData()">导出</button></div>
+            <div class="sc-row-inline"><span class="sc-inline-label" style="color:var(--red-t)">清空记录</span><span class="sc-inline-sub">不可恢复</span><button class="sc-inline-btn danger" onclick="confirmClear()">清空</button></div>
+            <div class="sc-divider"></div>
+            <div class="sc-section-label">账号</div>
+            <div class="sc-row-inline"><span class="sc-inline-label">当前登录</span><span class="sc-inline-sub" id="settingsEmail"></span></div>
+            <div class="sc-row-inline"><span class="sc-inline-label">云端同步</span><span class="sc-inline-sub" id="syncStatus">—</span></div>
+            <div class="sc-row-inline" style="justify-content:flex-end"><button class="sc-inline-btn danger" onclick="doLogout()">退出登录</button></div>
           </div>
-          <div class="settings-card">
-            <div class="sc-title">月度预算</div>
-            <div class="sc-row"><div><div class="sc-label">每月预算上限</div><div class="sc-sub">设为 0 表示不限制</div></div><input class="sc-input" type="number" id="set-budget" placeholder="0" min="0" step="100"></div>
-            <button class="save-bal-btn" onclick="saveBudget()">保存预算</button>
-          </div>
-          <div class="settings-card">
-            <div class="sc-title">数据管理</div>
-            <div class="sc-row"><div><div class="sc-label">导出数据</div><div class="sc-sub">下载 JSON 格式备份</div></div><button class="sc-btn neutral" onclick="exportData()">导出</button></div>
-            <div class="sc-row"><div><div class="sc-label">清空所有记录</div><div class="sc-sub">不可恢复，请谨慎操作</div></div><button class="sc-btn danger" onclick="confirmClear()">清空</button></div>
-          </div>
-          <div class="settings-card">
-            <div class="sc-title">账号</div>
-            <div class="sc-row"><div><div class="sc-label">当前登录</div><div class="sc-sub" id="settingsEmail"></div></div></div>
-            <div class="sc-row"><div><div class="sc-label">云端同步</div><div class="sc-sub">数据存储在 Supabase</div></div><span class="sc-val" id="syncStatus">—</span></div>
-            <div class="sc-row"><div><div class="sc-label">退出登录</div></div><button class="sc-btn danger" onclick="doLogout()">退出</button></div>
-          </div>
-          <div class="info-box">✓ 多设备同步 · 登录同一账号即可<br>✓ 微信/支付宝余额不足自动扣银行卡</div>
+          <div class="info-box" style="margin-top:12px">✓ 多设备同步 · 登录同一账号即可<br>✓ 微信/支付宝余额不足自动扣银行卡</div>
         </div>
       </div>
 
@@ -693,7 +698,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function localDateStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function localYM(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
 function showToast(msg,type='ok'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':type==='warn'?'warn':'');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800)}
-function setSS(state,msg){const dot=document.getElementById('syncDot'),txt=document.getElementById('syncText');if(!dot)return;dot.className='sync-dot'+(state?' '+state:'');txt.textContent=msg}
+function setSS(state,msg){const dot=document.getElementById('syncDot'),txt=document.getElementById('syncText');if(!dot)return;dot.className='sync-dot'+(state?' '+state:'');txt.textContent=msg;const s=document.getElementById('syncStatus');if(s)s.textContent=msg}
 function getLast6Months(){const months=[],now=new Date();for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'))}return months}
 function ymLabel(ym){return ym.split('-')[1]+'月'}
 function getCatMeta(cat){return CAT_META[cat]||{emoji:'📝',color:'#78716c',bg:'rgba(120,113,108,.08)'}}
